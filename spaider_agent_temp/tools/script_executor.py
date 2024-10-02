@@ -1,3 +1,7 @@
+"""
+   This module provides functionality to execute batch scripts and system commands.
+"""
+
 import subprocess
 
 def run_batch_script(script: str) -> str: 
