@@ -5,9 +5,41 @@
 import subprocess
 import platform
 
-def run_script(script: str) -> str: 
+def run_batch_script(script: str) -> str:
     """
-    Run a script in the system's default shell. if the shell is windows, the script is run as a batch script. if the shell is linux/macos, the script is run as a bash script. Make sure the script is formatted according to the shell type.
+    Run a batch script on Windows.
+
+    Args:
+        script: The batch script to run
+
+    Returns:
+        str: The output of the script
+    """
+    try:
+        result = subprocess.run(["cmd.exe", "/c", script], check=True, text=True, capture_output=True)
+        return result.stdout
+    except subprocess.CalledProcessError as err:
+        return f"Error occurred: {str(err)}\nStderr: {err.stderr}"
+
+def run_bash_script(script: str) -> str:
+    """
+    Run a bash script on Unix-like systems.
+
+    Args:
+        script: The bash script to run
+
+    Returns:
+        str: The output of the script
+    """
+    try:
+        result = subprocess.run(["/bin/bash", "-c", script], check=True, text=True, capture_output=True)
+        return result.stdout
+    except subprocess.CalledProcessError as err:
+        return f"Error occurred: {str(err)}\nStderr: {err.stderr}"
+
+def run_script(script: str) -> str:
+    """
+    Run a script using the appropriate method based on the operating system.
 
     Args:
         script: The script to run
@@ -15,18 +47,10 @@ def run_script(script: str) -> str:
     Returns:
         str: The output of the script
     """
-    try:
-        if platform.system() == "Windows":
-            shell = "cmd.exe"
-            shell_arg = "/c"
-        else:
-            shell = "/bin/bash"  # Changed from /bin/sh to /bin/bash for more features
-            shell_arg = "-c"
-        
-        result = subprocess.run([shell, shell_arg, script], check=True, text=True, capture_output=True)
-        return result.stdout
-    except subprocess.CalledProcessError as err:
-        return f"Error occurred: {str(err)}\nStderr: {err.stderr}"
+    if platform.system() == "Windows":
+        return run_batch_script(script)
+    else:
+        return run_bash_script(script)
 
 # class RunBatchScriptArgsSchema(BaseModel):
 #     script: str
