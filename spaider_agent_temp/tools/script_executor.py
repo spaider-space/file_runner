@@ -20,13 +20,13 @@ def run_script(script: str) -> str:
             shell = "cmd.exe"
             shell_arg = "/c"
         else:
-            shell = "/bin/sh"
+            shell = "/bin/bash"  # Changed from /bin/sh to /bin/bash for more features
             shell_arg = "-c"
         
         result = subprocess.run([shell, shell_arg, script], check=True, text=True, capture_output=True)
         return result.stdout
     except subprocess.CalledProcessError as err:
-        return f"Error occurred: {str(err)}"
+        return f"Error occurred: {str(err)}\nStderr: {err.stderr}"
 
 # class RunBatchScriptArgsSchema(BaseModel):
 #     script: str
