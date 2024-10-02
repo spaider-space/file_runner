@@ -3,19 +3,27 @@
 """
 
 import subprocess
+import platform
 
-def run_batch_script(script: str) -> str: 
+def run_script(script: str) -> str: 
     """
-    Run a batch script in the integrated terminal.
+    Run a script in the system's default shell.
 
     Args:
-        script: The batch script to run
+        script: The script to run
 
     Returns:
-        str: The output of the batch script
+        str: The output of the script
     """
     try:
-        result = subprocess.run(script, shell=True, check=True, text=True, capture_output=True)
+        if platform.system() == "Windows":
+            shell = "cmd.exe"
+            shell_arg = "/c"
+        else:
+            shell = "/bin/sh"
+            shell_arg = "-c"
+        
+        result = subprocess.run([shell, shell_arg, script], check=True, text=True, capture_output=True)
         return result.stdout
     except subprocess.CalledProcessError as err:
         return f"Error occurred: {str(err)}"

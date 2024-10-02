@@ -10,12 +10,12 @@ from spaider_agent_temp.prompts.prompts import *
 from spaider_agent_temp.models.chatgroq import BuildChatGroq
 
 '''IMPORT ALL TOOLS HERE AND CREATE LIST OF TOOLS TO BE PASSED TO THE AGENT.'''
-from spaider_agent_temp.tools.script_executor import run_batch_script
+from spaider_agent_temp.tools.script_executor import run_script
 from spaider_agent_temp.tools.file_tree import get_file_tree
 
 load_dotenv()
 
-tools = [run_batch_script, get_file_tree]
+tools = [run_script, get_file_tree]
 
 '''LLM TO USE'''
 MODEL = "llama-3.1-70b-versatile"
