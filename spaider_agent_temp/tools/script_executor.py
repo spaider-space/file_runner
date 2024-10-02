@@ -7,7 +7,7 @@ import platform
 
 def run_script(script: str) -> str: 
     """
-    Run a script in the system's default shell.
+    Run a script in the system's default shell. if the shell is windows, the script is run as a batch script. if the shell is linux/macos, the script is run as a bash script. Make sure the script is formatted according to the shell type.
 
     Args:
         script: The script to run
